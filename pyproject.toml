@@ -1,0 +1,27 @@
+[project]
+name = "MLP_project_structure"
+version = "0.1"
+description = "A machine learning project structure by Francis"
+authors = [
+    { name = "francisroyce", email = "francisroyce12@gmail.com" }
+]
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "pandas",
+    "numpy",
+    "seaborn",
+    "matplotlib"
+]
+
+# ✅ CLI entry point
+[project.scripts]
+mlp = "MLP_project_structure.cli:main"
+
+# ✅ Tell setuptools to find packages inside src/
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
