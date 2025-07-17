@@ -19,5 +19,5 @@ logging.basicConfig(
 
 logger = logging.getLogger("mlp_logger")
 
-if __name__ == "__main__":  # ✅ Corrected line
-    logger.info("Logging has started")  # ✅ Also changed logging.info → logger.info
+if __name__ == "__main__": 
+    logger.info("Logging has started")  
