@@ -9,8 +9,7 @@ from sklearn.pipeline import Pipeline
 
 from src.exception import CustomException
 from src.logger import logging
-from src.utils import save_object  # ✅ Import here
-
+from src.utils import save_object
 from dataclasses import dataclass
 
 @dataclass
@@ -21,17 +20,16 @@ class DataTransformation:
     def __init__(self):
         self.data_transformation_config = DataTransformationConfig()
 
-    def get_data_transformer_object(self):
+    def get_data_transformer_object(self, input_df):
         try:
-            numerical_columns = ['writing_score', 'reading_score']
-            categorical_columns = [
-                'gender',
-                'race_ethnicity',
-                'parental_level_of_education',
-                'lunch',
-                'test_preparation_course'
-            ]
+            # Dynamically identify numerical and categorical columns
+            numerical_columns = input_df.select_dtypes(exclude="object").columns.tolist()
+            categorical_columns = input_df.select_dtypes(include="object").columns.tolist()
 
+            logging.info(f"Numerical columns detected: {numerical_columns}")
+            logging.info(f"Categorical columns detected: {categorical_columns}")
+
+            # Define pipelines
             num_pipeline = Pipeline(steps=[
                 ('imputer', SimpleImputer(strategy='median')),
                 ('scaler', StandardScaler())
@@ -40,15 +38,16 @@ class DataTransformation:
             cat_pipeline = Pipeline(steps=[
                 ('imputer', SimpleImputer(strategy='most_frequent')),
                 ('encoder', OneHotEncoder(sparse_output=False, handle_unknown='ignore')),
-                ('scaler', StandardScaler())
+                ('scaler', StandardScaler(with_mean=False))  # Avoid error due to sparse matrix
             ])
 
+            # ColumnTransformer to apply the above pipelines
             preprocessor = ColumnTransformer(transformers=[
                 ('num_pipeline', num_pipeline, numerical_columns),
                 ('cat_pipeline', cat_pipeline, categorical_columns)
             ])
 
-            logging.info('Preprocessor pipeline created successfully.')
+            logging.info("Preprocessor pipeline created successfully.")
             return preprocessor
 
         except Exception as e:
@@ -59,18 +58,17 @@ class DataTransformation:
         try:
             train_df = pd.read_csv(train_path)
             test_df = pd.read_csv(test_path)
-            logging.info('Read train and test data completed.')
-
-            preprocessor_obj = self.get_data_transformer_object()
-            logging.info('Obtained preprocessing object.')
+            logging.info("Read train and test data successfully.")
 
             target_column_name = 'math_score'
-
-            input_feature_train_df = train_df.drop(columns=[target_column_name], axis=1)
+            input_feature_train_df = train_df.drop(columns=[target_column_name])
             target_feature_train_df = train_df[target_column_name]
 
-            input_feature_test_df = test_df.drop(columns=[target_column_name], axis=1)
+            input_feature_test_df = test_df.drop(columns=[target_column_name])
             target_feature_test_df = test_df[target_column_name]
+
+            # Get preprocessing object dynamically based on training input
+            preprocessor_obj = self.get_data_transformer_object(input_feature_train_df)
 
             input_feature_train_arr = preprocessor_obj.fit_transform(input_feature_train_df)
             input_feature_test_arr = preprocessor_obj.transform(input_feature_test_df)
@@ -78,13 +76,15 @@ class DataTransformation:
             train_arr = np.c_[input_feature_train_arr, target_feature_train_df]
             test_arr = np.c_[input_feature_test_arr, target_feature_test_df]
 
-            logging.info("⚠️ About to call save_object for preprocessor")
-            # ✅ Use save_object here
             save_object(self.data_transformation_config.preprocessor_obj_file_path, preprocessor_obj)
+            logging.info("Preprocessor object saved successfully.")
+            logging.info("Data transformation completed.")
 
-            logging.info('Data transformation completed.')
-
-            return train_arr, test_arr, self.data_transformation_config.preprocessor_obj_file_path
+            return (
+                train_arr,
+                test_arr,
+                self.data_transformation_config.preprocessor_obj_file_path
+            )
 
         except Exception as e:
             logging.error("Error in initiate_data_transformation", exc_info=True)
