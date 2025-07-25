@@ -1,0 +1,11 @@
+{
+    "Linear Regression": 0.8804332983749565,
+    "Lasso": 0.8564341512770284,
+    "Ridge": 0.880567179073392,
+    "K-Neighbors Regressor": 0.47561174068704326,
+    "Decision Tree": 0.7362931621149806,
+    "Random Forest Regressor": 0.8556619071486204,
+    "XGBRegressor": 0.8554963303135854,
+    "CatBoosting Regressor": 0.8631469402174647,
+    "AdaBoost Regressor": 0.8457332282720267
+}
