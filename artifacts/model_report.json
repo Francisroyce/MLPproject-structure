@@ -1,11 +1,11 @@
 {
     "Linear Regression": 0.8804332983749565,
-    "Lasso": 0.8564341512770284,
-    "Ridge": 0.880567179073392,
-    "K-Neighbors Regressor": 0.47561174068704326,
-    "Decision Tree": 0.7362931621149806,
-    "Random Forest Regressor": 0.8556619071486204,
+    "Lasso": 0.8806792203277674,
+    "Ridge": 0.8804347861141353,
+    "K-Neighbors Regressor": 0.4870744206589738,
+    "Decision Tree": 0.8242299188020519,
+    "Random Forest Regressor": 0.8451571417599241,
     "XGBRegressor": 0.8554963303135854,
     "CatBoosting Regressor": 0.8631469402174647,
-    "AdaBoost Regressor": 0.8457332282720267
+    "AdaBoost Regressor": 0.8478536790348064
 }

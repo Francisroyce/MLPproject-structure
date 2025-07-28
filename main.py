@@ -1,9 +1,7 @@
 from src.components.data_transformation import DataTransformation
-from src.components.data_transformation import DataTransformationConfig
 from src.components.data_ingestion import DataIngestion
-
 from src.components.model_trainer import ModelTrainer
-from src.components.model_trainer import ModelTrainerConfig
+from src.visualize_feature_importance import show_feature_importance
 
 if __name__ == "__main__":
     # Data Ingestion
@@ -18,4 +16,7 @@ if __name__ == "__main__":
     trainer = ModelTrainer()
     best_model_name, test_score = trainer.initiate_model_trainer(train_array, test_array)
 
-    print(f"\n Best model: {best_model_name} with Test R2 Score: {test_score:.4f}")
+    print(f"\nBest model: {best_model_name} with Test R2 Score: {test_score:.4f}")
+
+    # Show Feature Importance
+    show_feature_importance()

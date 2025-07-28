@@ -1,0 +1,21 @@
+{
+    "num_pipeline__writing_score": 10.835029046389845,
+    "cat_pipeline__gender_female": -6.502838872848831,
+    "num_pipeline__reading_score": 3.464196452521769,
+    "cat_pipeline__race_ethnicity_group E": 1.7204665846160017,
+    "cat_pipeline__lunch_free/reduced": -1.6700305688104484,
+    "cat_pipeline__test_preparation_course_completed": -1.5448315465117717,
+    "cat_pipeline__parental_level_of_education_master's degree": -0.49279746727097007,
+    "cat_pipeline__parental_level_of_education_bachelor's degree": -0.45946793078027404,
+    "cat_pipeline__parental_level_of_education_associate's degree": -0.2987993977802587,
+    "cat_pipeline__race_ethnicity_group C": -0.27749902176446933,
+    "cat_pipeline__race_ethnicity_group D": -0.2448285776364919,
+    "cat_pipeline__race_ethnicity_group B": 0.13992838169720925,
+    "cat_pipeline__parental_level_of_education_some college": 0.10174115011148725,
+    "cat_pipeline__parental_level_of_education_high school": 0.06497897727295701,
+    "cat_pipeline__lunch_standard": 2.442490654175309e-17,
+    "cat_pipeline__race_ethnicity_group A": 0.0,
+    "cat_pipeline__gender_male": 0.0,
+    "cat_pipeline__parental_level_of_education_some high school": 0.0,
+    "cat_pipeline__test_preparation_course_none": 0.0
+}

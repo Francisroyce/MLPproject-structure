@@ -45,3 +45,19 @@ def evaluate_models(x_train, y_train, x_test, y_test, models):
 
     except Exception as e:
         raise CustomException(e, sys)
+
+
+#model loading
+def load_object(file_path):
+    """
+    Loads a Python object from a pickle (dill) file.
+    """
+    try:
+        if not os.path.exists(file_path):
+            raise FileNotFoundError(f"The file {file_path} does not exist.")
+        
+        with open(file_path, 'rb') as file_obj:
+            return dill.load(file_obj)  # Use dill to match save_object
+    except Exception as e:
+        raise CustomException(e, sys)
+
