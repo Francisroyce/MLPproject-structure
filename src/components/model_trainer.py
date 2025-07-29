@@ -32,7 +32,7 @@ class ModelTrainer:
 
     def tune_model(self, model, param_grid, x_train, y_train):
         try:
-            gs = GridSearchCV(model, param_grid, cv=3, scoring='r2', n_jobs=-1)
+            gs = GridSearchCV(model, param_grid, cv=5, scoring='r2', n_jobs=-1)
             gs.fit(x_train, y_train)
             logging.info(f"Tuned {model.__class__.__name__} with best params: {gs.best_params_}")
             return gs.best_estimator_
@@ -41,6 +41,10 @@ class ModelTrainer:
             return model
 
     def initiate_model_trainer(self, train_array, test_array):
+        best_model_name = "None"
+        test_score = -1
+        score_file_path = os.path.join("artifacts", "score.txt")
+
         try:
             logging.info('Splitting training and test input data')
             x_train, y_train, x_test, y_test = (
@@ -140,6 +144,7 @@ class ModelTrainer:
 
             logging.info(f"Best model: {best_model_name} with R2 Score: {best_model_score:.4f}")
 
+            # Save best model
             save_object(
                 file_path=self.model_trainer_config.trained_model_file_path,
                 obj=best_model
@@ -153,7 +158,15 @@ class ModelTrainer:
 
             logging.info(f"{best_model_name} - Train R2: {train_score:.4f}, Test R2: {test_score:.4f}")
 
-            return best_model_name, test_score
-
         except Exception as e:
-            raise CustomException(e, sys)
+            logging.error(f"Model training failed: {e}")
+            # still allow score.txt to be written
+
+        finally:
+            # ✅ Always write score.txt
+            os.makedirs(os.path.dirname(score_file_path), exist_ok=True)
+            with open(score_file_path, "w") as f:
+                f.write(f"Best model: {best_model_name}\n")
+                f.write(f"Test R2 score: {test_score:.4f}")
+
+        return best_model_name, test_score

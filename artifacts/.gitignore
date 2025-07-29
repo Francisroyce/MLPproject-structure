@@ -1,0 +1,7 @@
+/train.csv
+/test.csv
+/train_array.npy
+/test_array.npy
+/score.txt
+/model.pkl
+/model_report.json

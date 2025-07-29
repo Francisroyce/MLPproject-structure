@@ -1,0 +1,29 @@
+stages:
+  ingest:
+    cmd: python src/scripts/data_ingestion.py
+    deps:
+      - src/scripts/data_ingestion.py
+    outs:
+      - artifacts/test.csv
+      - artifacts/train.csv
+
+  transform:
+    cmd: python src/scripts/data_transformation.py
+    deps:
+      - artifacts/test.csv
+      - artifacts/train.csv
+      - src/scripts/data_transformation.py
+    outs:
+      - artifacts/test_array.npy
+      - artifacts/train_array.npy
+
+  train:
+    cmd: python src/scripts/model_trainer.py
+    deps:
+      - artifacts/test_array.npy
+      - artifacts/train_array.npy
+      - src/scripts/model_trainer.py
+    outs:
+      - artifacts/score.txt
+      - artifacts/model.pkl
+      - artifacts/model_report.json

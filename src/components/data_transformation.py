@@ -15,6 +15,8 @@ from dataclasses import dataclass
 @dataclass
 class DataTransformationConfig:
     preprocessor_obj_file_path = os.path.join('artifacts', 'preprocessor.pkl')
+    train_array_path = os.path.join('artifacts', 'train_array.npy')
+    test_array_path = os.path.join('artifacts', 'test_array.npy')
 
 class DataTransformation:
     def __init__(self):
@@ -38,7 +40,7 @@ class DataTransformation:
             cat_pipeline = Pipeline(steps=[
                 ('imputer', SimpleImputer(strategy='most_frequent')),
                 ('encoder', OneHotEncoder(sparse_output=False, handle_unknown='ignore')),
-                ('scaler', StandardScaler(with_mean=False))  # Avoid error due to sparse matrix
+                ('scaler', StandardScaler(with_mean=False))
             ])
 
             # ColumnTransformer to apply the above pipelines
@@ -67,7 +69,6 @@ class DataTransformation:
             input_feature_test_df = test_df.drop(columns=[target_column_name])
             target_feature_test_df = test_df[target_column_name]
 
-            # Get preprocessing object dynamically based on training input
             preprocessor_obj = self.get_data_transformer_object(input_feature_train_df)
 
             input_feature_train_arr = preprocessor_obj.fit_transform(input_feature_train_df)
@@ -76,8 +77,15 @@ class DataTransformation:
             train_arr = np.c_[input_feature_train_arr, target_feature_train_df]
             test_arr = np.c_[input_feature_test_arr, target_feature_test_df]
 
+            # Save preprocessor object
             save_object(self.data_transformation_config.preprocessor_obj_file_path, preprocessor_obj)
             logging.info("Preprocessor object saved successfully.")
+
+            # ✅ Save arrays to disk for DVC output tracking
+            np.save(self.data_transformation_config.train_array_path, train_arr)
+            np.save(self.data_transformation_config.test_array_path, test_arr)
+            logging.info("Train and test arrays saved successfully.")
+
             logging.info("Data transformation completed.")
 
             return (
