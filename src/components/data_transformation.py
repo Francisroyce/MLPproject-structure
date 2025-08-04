@@ -81,7 +81,7 @@ class DataTransformation:
             save_object(self.data_transformation_config.preprocessor_obj_file_path, preprocessor_obj)
             logging.info("Preprocessor object saved successfully.")
 
-            # ✅ Save arrays to disk for DVC output tracking
+            # Save arrays to disk for DVC output tracking
             np.save(self.data_transformation_config.train_array_path, train_arr)
             np.save(self.data_transformation_config.test_array_path, test_arr)
             logging.info("Train and test arrays saved successfully.")
