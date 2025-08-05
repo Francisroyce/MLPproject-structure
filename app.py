@@ -104,7 +104,9 @@ def open_browser():
 
 # Run the Flask app
 if __name__ == "__main__":
-    if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-        threading.Thread(target=open_browser).start()
+    if not os.environ.get("DOCKER"):  # Custom env var to detect Docker
+        if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+            threading.Thread(target=open_browser).start()
 
     app.run(debug=True, use_reloader=True, port=5000)
+
