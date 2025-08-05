@@ -97,16 +97,15 @@ def predict_api():
     except Exception as e:
         return jsonify({'error': str(e)}), 400
 
-# Auto-open browser (optional for dev)
+# Auto-open browser (for local dev only)
 def open_browser():
     time.sleep(1)
     webbrowser.open_new("http://127.0.0.1:5000")
 
 # Run the Flask app
 if __name__ == "__main__":
-    if not os.environ.get("DOCKER"):  # Custom env var to detect Docker
-        if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
-            threading.Thread(target=open_browser).start()
+    port = int(os.environ.get('PORT', 5000))
+    if not os.environ.get("DOCKER") and os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+        threading.Thread(target=open_browser).start()
 
-    app.run(debug=True, use_reloader=True, port=5000)
-
+    app.run(host='0.0.0.0', port=port, debug=True, use_reloader=True)
