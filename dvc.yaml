@@ -27,3 +27,14 @@ stages:
       - artifacts/score.txt
       - artifacts/model.pkl
       - artifacts/model_report.json
+
+  predict:
+    cmd: python src/scripts/predict.py
+    deps:
+      - src/scripts/predict.py
+      - artifacts/model.pkl
+      - artifacts/preprocessor.pkl
+      - src/pipeline/predict_pipeline.py  # or wherever your classes are
+    outs:
+      - artifacts/predictions.csv
+

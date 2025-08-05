@@ -68,3 +68,27 @@ stages:
       hash: md5
       md5: c2408db57dd62dc883822a614725f05f
       size: 40
+  predict:
+    cmd: python src/scripts/predict.py
+    deps:
+    - path: artifacts/model.pkl
+      hash: md5
+      md5: ab929bc6be5705bb8917240f6ef8d8b3
+      size: 705
+    - path: artifacts/preprocessor.pkl
+      hash: md5
+      md5: 09fef1e4324dd1609d4f58114e876875
+      size: 3487
+    - path: src/pipeline/predict_pipeline.py
+      hash: md5
+      md5: ec5077a2d272cb8e4360869451cf7f1b
+      size: 2031
+    - path: src/scripts/predict.py
+      hash: md5
+      md5: f92e76863753169265bd93a0be72ef34
+      size: 811
+    outs:
+    - path: artifacts/predictions.csv
+      hash: md5
+      md5: 028d3a69415d63dccfad17c725c942e9
+      size: 31
