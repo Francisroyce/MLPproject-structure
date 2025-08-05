@@ -163,7 +163,7 @@ class ModelTrainer:
             # still allow score.txt to be written
 
         finally:
-            # ✅ Always write score.txt
+            # Always write score.txt
             os.makedirs(os.path.dirname(score_file_path), exist_ok=True)
             with open(score_file_path, "w") as f:
                 f.write(f"Best model: {best_model_name}\n")
