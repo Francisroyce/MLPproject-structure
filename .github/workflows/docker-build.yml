@@ -3,7 +3,8 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main  # Or the branch you are using
+      - main
+  workflow_dispatch:  # Optional: allows manual runs from GitHub UI
 
 jobs:
   build:
@@ -20,7 +21,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build the Docker image
-        run: docker build -t yourdockerhubusername/flask-grade-predictor .
+        run: docker build -t francisroyce/flask-grade-predictor .
 
       - name: Push the Docker image to Docker Hub
-        run: docker push yourdockerhubusername/flask-grade-predictor
+        run: docker push francisroyce/flask-grade-predictor
